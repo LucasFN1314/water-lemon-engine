@@ -9,7 +9,7 @@ export default class Player extends LiveGameObject {
 
     this.speed = this.base_speed;
     this.addToWorld(
-      [this.engine.rect(30, 100), this.engine.pos(30, 0)],
+      [this.engine.rect(30, 100), this.engine.pos(30, 0), "player"],
       "player",
     );
 

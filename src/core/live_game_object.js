@@ -4,11 +4,6 @@ export default class LiveGameObject extends GameObject {
   constructor() {
     super();
 
-    // || Speed
-    this.base_speed = 10;
-    this.run_speed = 30;
-    this.speed = this.base_speed;
-
     // || Energy
     this.energy = 100;
     this.energyRegen = 0.5;
@@ -24,6 +19,14 @@ export default class LiveGameObject extends GameObject {
     // || Moving
     this.isMoving = false;
     this.isRunning = false;
+  }
+
+  // || Override
+  addToWorld(
+    attributes = [],
+    name = `live_game_object_${Object.keys(globalThis.engine?.entities || {})?.length}`,
+  ) {
+    super.addToWorld([...attributes, this.engine.area()], name);
   }
 
   // || Movement
@@ -69,33 +72,43 @@ export default class LiveGameObject extends GameObject {
   }
 
   // || Move Limitations Around Screen
-  handleMoveLimitations() {
-    if (this.object.worldPos().y < this.topScreenLimit) {
-      this.object.pos = this.engine.vec2(
-        this.object.worldPos().x,
-        this.topScreenLimit,
-      );
+  handleMoveLimitations(
+    self,
+    horizontal = true,
+    vertical = true,
+    callback = () => {},
+  ) {
+    // Obtenemos dimensiones dinámicamente: si es círculo usa r, si es rect usa h/w
+    const height = this.object.height ?? 0;
+    const width = this.object.width ?? 0;
+    const radius = this.object.radius ?? 0;
+
+    // || Vertical (Techo y Suelo)
+    if (vertical) {
+      // Límite Superior
+      if (this.object.pos.y - radius < this.topScreenLimit) {
+        this.object.pos.y = this.topScreenLimit + radius;
+        callback(self, "top");
+      }
+      // Límite Inferior
+      if (this.object.pos.y + height + radius > this.bottomScreenLimit) {
+        this.object.pos.y = this.bottomScreenLimit - height - radius;
+        callback(self, "bottom");
+      }
     }
-    if (
-      this.object.worldPos().y + this.object.height >
-      this.bottomScreenLimit
-    ) {
-      this.object.pos = this.engine.vec2(
-        this.object.worldPos().x,
-        this.bottomScreenLimit - this.object.height,
-      );
-    }
-    if (this.object.worldPos().x < this.leftScreenLimit) {
-      this.object.pos = this.engine.vec2(
-        this.leftScreenLimit,
-        this.object.worldPos().y,
-      );
-    }
-    if (this.object.worldPos().x + this.object.width > this.rightScreenLimit) {
-      this.object.pos = this.engine.vec2(
-        this.rightScreenLimit - this.object.width,
-        this.object.worldPos().y,
-      );
+
+    // || Horizontal (Paredes)
+    if (horizontal) {
+      // Límite Izquierdo
+      if (this.object.pos.x - radius < this.leftScreenLimit) {
+        this.object.pos.x = this.leftScreenLimit + radius;
+        callback(self, "left");
+      }
+      // Límite Derecho
+      if (this.object.pos.x + width + radius > this.rightScreenLimit) {
+        this.object.pos.x = this.rightScreenLimit - width - radius;
+        callback(self, "right");
+      }
     }
   }
 }

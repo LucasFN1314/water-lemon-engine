@@ -10,6 +10,11 @@ export default class EnergyIndicator extends GameObject {
     this.base_width = 300;
     this.width = this.base_width;
 
+    this.red = this.engine.rgb(255, 0, 0);
+    this.green = this.engine.rgb(0, 255, 0);
+
+    this.player = findGameObjectByName("player");
+
     this.addToWorld(
       [
         this.engine.rect(this.base_width, 20),
@@ -31,15 +36,12 @@ export default class EnergyIndicator extends GameObject {
     );
 
     this.engine.onUpdate(() => {
-      const player = findGameObjectByName("player");
-      if (!player) return;
+      if (!this.player) return;
 
-      const energy = player.energy / 100;
-      const red = this.engine.rgb(255, 0, 0);
-      const green = this.engine.rgb(0, 255, 0);
+      const energy = this.player.energy / 100;
 
       this.object.width = energy * this.base_width;
-      this.object.color = this.engine.lerp(red, green, energy);
+      this.object.color = this.engine.lerp(this.red, this.green, energy);
     });
   }
 }

@@ -2,6 +2,12 @@ export default class GameObject {
   constructor() {
     this.engine = globalThis.engine;
     this.object = null;
+
+    // || Speed
+    this.base_speed = 10;
+    this.run_speed = 30;
+    this.speed = this.base_speed;
+    this.direction = this.engine.vec2(0, 0);
   }
 
   update() {}
@@ -11,5 +17,13 @@ export default class GameObject {
   ) {
     this.object = this.engine.add(attributes);
     globalThis.entities[name] = this;
+  }
+
+  handleCollide(self, tags = [], callback = () => {}) {
+    tags?.forEach((tag) => {
+      this.object.onCollide(tag, (obj) => {
+        callback(self, obj);
+      });
+    });
   }
 }
