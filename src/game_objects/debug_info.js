@@ -15,8 +15,6 @@ export default class DebugInfo extends GameObject {
       ],
       "debug_info",
     );
-
-    console.log(this.engine);
   }
 
   update() {

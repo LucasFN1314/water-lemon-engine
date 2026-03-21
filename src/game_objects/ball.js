@@ -1,4 +1,8 @@
-import { generateRandomNumber, isObjectUnderMiddleScreen } from "../core/core";
+import {
+  findGameObjectByName,
+  generateRandomNumber,
+  isObjectUnderMiddleScreen,
+} from "../core/core";
 import LiveGameObject from "../core/live_game_object";
 
 // || TODO: Al golpear a un jugador, rebotar fuerte incrementando la velocidad, la misma debe ir bajando a medida que rebota en las paredes
@@ -7,6 +11,8 @@ import LiveGameObject from "../core/live_game_object";
 export default class Ball extends LiveGameObject {
   constructor() {
     super();
+
+    this.debug_stop = false;
 
     this.radius = 10;
     this.base_speed = 300;
@@ -28,13 +34,14 @@ export default class Ball extends LiveGameObject {
     );
 
     this.defineInitialDirection();
-    this.handleCollide(this, ["player"], this.onObjectCollide);
+    this.handleCollide(this, ["player", "rival"], this.onObjectCollide);
     this.handleUpdate();
     this.handleMovement();
   }
 
   handleUpdate() {
     this.object.onUpdate(() => {
+      if (this.debug_stop) return;
       this.object.move(
         this.direction.x * this.speed,
         this.direction.y * this.speed,
@@ -46,6 +53,10 @@ export default class Ball extends LiveGameObject {
   handleMovement() {}
 
   onObjectCollide(self, obj) {
+    if (obj.is("player")) {
+      findGameObjectByName("rival").attack_mode = true;
+    }
+
     self.direction.x *= -1;
     const zone = self.getPaddleHitZone(obj);
     if (zone === "TOP") {
