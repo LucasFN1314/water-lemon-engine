@@ -27,8 +27,8 @@ function handleEvents() {
 }
 
 k.onUpdate(() => {
-  for (const key in globalThis.entities) {
-    globalThis.entities[key].update();
+  for (let i = 0; i < globalThis.entities.length; i++) {
+    globalThis.entities[i].update();
   }
 });
 
