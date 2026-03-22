@@ -11,19 +11,19 @@ export const isObjectUnderMiddleScreen = (obj) => {
 };
 
 export const moveTowardsY = (currentGO, targetY, speed) => {
-  let current = currentGO.object.pos.y;
+  let currentY = currentGO.object.pos.y;
 
-  let distance = targetY - current;
+  let distance = targetY - currentY;
   let moveStep = speed * globalThis.engine.dt();
 
   if (Math.abs(distance) <= moveStep) {
-    current = targetY;
+    currentY = targetY;
   } else {
-    current += distance > 0 ? moveStep : -moveStep;
+    currentY += distance > 0 ? moveStep : -moveStep;
   }
 
   currentGO.object.pos = globalThis.engine.vec2(
     currentGO.object.pos.x,
-    current,
+    currentY,
   );
 };

@@ -1,5 +1,5 @@
-import { findGameObjectByName } from "../core/core";
-import GameObject from "../core/game_object";
+import { findGameObjectByName } from "../../core/core";
+import GameObject from "../../core/game_object";
 
 // k.lerpColor
 

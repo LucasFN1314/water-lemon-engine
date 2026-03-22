@@ -1,4 +1,5 @@
-import GameObject from "../core/game_object";
+import { findGameObjectByName } from "../../core/core";
+import GameObject from "../../core/game_object";
 
 export default class DebugInfo extends GameObject {
   constructor() {
@@ -21,7 +22,13 @@ export default class DebugInfo extends GameObject {
     this.refreshTimer += this.engine.dt();
     if (this.refreshTimer > 0.5) {
       const fps = Math.round(1 / this.engine.dt());
-      this.object.text = `FPS: ${fps}`;
+      this.object.text = `FPS: ${fps}
+Player Score: ${findGameObjectByName("player").score}
+Rival Score: ${findGameObjectByName("rival").score}
+Total Score: ${globalThis.game.total_score}
+Speed Multiplier: ${globalThis.game.speed_multiplier}
+Ball Speed: ${findGameObjectByName("ball").speed}
+      `;
       this.refreshTimer = 0;
     }
   }

@@ -1,6 +1,7 @@
 export default class GameObject {
   constructor() {
     this.engine = globalThis.engine;
+    this.game = globalThis.game;
     this.object = null;
 
     // || Speed

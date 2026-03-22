@@ -2,8 +2,8 @@ import {
   findGameObjectByName,
   generateRandomNumber,
   moveTowardsY,
-} from "../core/core";
-import LiveGameObject from "../core/live_game_object";
+} from "../../core/core";
+import LiveGameObject from "../../core/live_game_object";
 
 export default class Rival extends LiveGameObject {
   // || Instrucciones de comportamiento:
@@ -25,10 +25,11 @@ export default class Rival extends LiveGameObject {
     };
 
     this.attack_mode = false;
-    this.base_speed = 400;
-    this.run_speed = 500;
+    this.base_speed = this.game.initial_speed * this.game.speed_multiplier;
+    this.run_speed =
+      this.game.initial_speed * 1.25 * this.game.speed_multiplier;
 
-    this.speed = this.base_speed;
+    this.speed = this.base_speed * this.game.speed_multiplier;
     this.score = 0;
 
     this.stop = false;
@@ -38,12 +39,9 @@ export default class Rival extends LiveGameObject {
       "rival",
     );
 
-    this.object.pos = this.engine.vec2(
-      this.engine.width() - 30 - this.object.width,
-      this.engine.height() / 2 - this.object.height / 2,
-    );
-
     this.handleCollide(this, ["ball"], this.onBallCollide);
+
+    this.reset();
   }
 
   onBallCollide(self, obj) {
@@ -60,20 +58,18 @@ export default class Rival extends LiveGameObject {
       this.stop = true;
     });
 
-    if (this.attack_mode) {
+    if (this.ball.started) {
       this.attack();
     } else {
-      // Cuando ya no esté atacando, limpiamos la decisión para el próximo tiro
       this.currentHitZoneValue = null;
     }
   }
 
   attack() {
-    // Si todavía no hemos tomado una decisión para este ataque, la tomamos UNA SOLA VEZ
+    this.speed = this.game.initial_speed * this.game.speed_multiplier;
+
     if (!this.currentHitZoneValue) {
       const hit = this.decideToHit();
-      //const hit = true;
-
       const hitZone = this.getHitZone();
       this.currentHitZoneValue = this.hitZoneMap[hitZone];
 
@@ -133,5 +129,16 @@ export default class Rival extends LiveGameObject {
 
     const no = pby - (h - h / y);
     return no;
+  }
+
+  reset() {
+    this.object.pos = this.engine.vec2(
+      this.engine.width() - 30 - this.object.width,
+      this.engine.height() / 2 - this.object.height / 2,
+    );
+
+    this.attack_mode = false;
+    this.currentHitZoneValue = null;
+    this.targetOffset = 0;
   }
 }

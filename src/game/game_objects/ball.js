@@ -2,8 +2,8 @@ import {
   findGameObjectByName,
   generateRandomNumber,
   isObjectUnderMiddleScreen,
-} from "../core/core";
-import LiveGameObject from "../core/live_game_object";
+} from "../../core/core";
+import LiveGameObject from "../../core/live_game_object";
 
 // || TODO: Al golpear a un jugador, rebotar fuerte incrementando la velocidad, la misma debe ir bajando a medida que rebota en las paredes
 // || Hasta llegar a su velocidad base
@@ -12,11 +12,11 @@ export default class Ball extends LiveGameObject {
   constructor() {
     super();
 
-    this.debug_stop = false;
-
     this.radius = 10;
-    this.base_speed = 300;
+    this.base_speed = this.game.initial_speed * this.game.speed_multiplier;
     this.speed = this.base_speed;
+
+    this.started = false;
 
     this.addToWorld(
       [
@@ -33,20 +33,27 @@ export default class Ball extends LiveGameObject {
       this.engine.height() / 2 - this.radius,
     );
 
-    this.defineInitialDirection();
     this.handleCollide(this, ["player", "rival"], this.onObjectCollide);
     this.handleUpdate();
     this.handleMovement();
+
+    this.engine.onKeyPress("space", () => {
+      this.defineInitialDirection();
+      this.started = true;
+    });
   }
 
   handleUpdate() {
     this.object.onUpdate(() => {
-      if (this.debug_stop) return;
+      if (!this.started) return;
+
+      this.speed = this.game.initial_speed * this.game.speed_multiplier;
+
       this.object.move(
         this.direction.x * this.speed,
         this.direction.y * this.speed,
       );
-      this.handleMoveLimitations(this, false, true, this.handleWallCollide);
+      this.handleMoveLimitations(this, true, true, this.handleWallCollide);
     });
   }
 
@@ -79,9 +86,11 @@ export default class Ball extends LiveGameObject {
       },
       left: () => {
         // || Sumar puntos IA
+        self.reset("rival");
       },
       right: () => {
         // || Sumar puntos Jugador
+        self.reset("player");
       },
     };
 
@@ -89,12 +98,12 @@ export default class Ball extends LiveGameObject {
   }
 
   defineInitialDirection() {
-    this.direction = this.engine.vec2(-1, 0);
-    return;
-    this.direction = this.engine.vec2(
-      generateRandomNumber(-1, 1),
-      generateRandomNumber(-1, 1),
-    );
+    // this.direction = this.engine.vec2(-1, 0);
+
+    let number = generateRandomNumber(-1, 1);
+    number = number === 0 ? 1 : number;
+
+    this.direction = this.engine.vec2(number, number);
   }
 
   getPaddleHitZone(obj) {
@@ -107,5 +116,20 @@ export default class Ball extends LiveGameObject {
     if (relativeHit < 0.33) return "TOP";
     if (relativeHit > 0.66) return "BOTTOM";
     return "MIDDLE";
+  }
+
+  reset(winner) {
+    findGameObjectByName(winner).score += 1;
+    this.resetBall();
+    this.started = false;
+    this.game.speed_controller.incrementSpeedMultiplier();
+  }
+
+  resetBall() {
+    this.object.pos = this.engine.vec2(
+      this.engine.width() / 2 - this.radius,
+      this.engine.height() / 2 - this.radius,
+    );
+    this.defineInitialDirection();
   }
 }
