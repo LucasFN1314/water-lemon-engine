@@ -18,6 +18,7 @@ export default class GameObject {
   ) {
     this.object = this.engine.add(attributes);
     globalThis.entities[name] = this;
+    globalThis.entitiesArray.push(this);
   }
 
   handleCollide(self, tags = [], callback = () => {}) {

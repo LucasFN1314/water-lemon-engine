@@ -7,6 +7,7 @@ import Game from "./game/game";
 const k = kaplay();
 globalThis.engine = k;
 globalThis.entities = {};
+globalThis.entitiesArray = [];
 
 k.loadRoot("./"); // A good idea for Itch.io publishing later
 
@@ -27,8 +28,8 @@ function handleEvents() {
 }
 
 k.onUpdate(() => {
-  for (let i = 0; i < globalThis.entities.length; i++) {
-    globalThis.entities[i].update();
+  for (let i = 0; i < globalThis.entitiesArray.length; i++) {
+    globalThis.entitiesArray[i].update();
   }
 });
 
