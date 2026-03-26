@@ -19,6 +19,10 @@ export default class LiveGameObject extends GameObject {
     // || Moving
     this.isMoving = false;
     this.isRunning = false;
+
+    // || Physic
+    this.isPhysic = false;
+    this.isStatic = false;
   }
 
   // || Override
@@ -26,7 +30,12 @@ export default class LiveGameObject extends GameObject {
     attributes = [],
     name = `live_game_object_${Object.keys(globalThis.engine?.entities || {})?.length}`,
   ) {
-    super.addToWorld([...attributes, this.engine.area()], name);
+    let _attributes = attributes;
+
+    if (this.isPhysic) {
+      _attributes.push(this.engine.body({ isStatic: this.isStatic }));
+    }
+    super.addToWorld([..._attributes, this.engine.area()], name);
   }
 
   // || Movement

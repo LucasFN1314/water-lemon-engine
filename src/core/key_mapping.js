@@ -1,6 +1,6 @@
 import functions from "./functions";
 
-const pressed = {};
+// const pressed = {};
 
 let mapping = {
   a: () => {
@@ -36,13 +36,13 @@ export const getAction = (key) => {
   return getMapping()[key] ? getMapping()[key] : () => {};
 };
 
-export const isPressed = (key) => {
-  return pressed[key] ? true : false;
-};
+// export const isPressed = (key) => {
+//   return pressed[key] ? true : false;
+// };
 
-export const arePressed = (keys, strict = false) => {
-  if (strict) return keys.every((key) => isPressed(key));
-  else return keys.some((key) => isPressed(key));
-};
+// export const arePressed = (keys, strict = false) => {
+//   if (strict) return keys.every((key) => isPressed(key));
+//   else return keys.some((key) => isPressed(key));
+// };
 
-export { pressed };
+// export { pressed };

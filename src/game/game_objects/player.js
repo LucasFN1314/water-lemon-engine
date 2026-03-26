@@ -1,9 +1,13 @@
-import { arePressed, isPressed } from "../../core/key_mapping";
 import LiveGameObject from "../../core/live_game_object";
 
 export default class Player extends LiveGameObject {
   constructor() {
     super();
+    this.isPhysic = false;
+    this.isStatic = false;
+
+    this.movementKeys = ["w", "a", "s", "d"];
+
     this.base_speed = this.game.initial_speed * this.game.speed_multiplier;
     this.run_speed =
       this.game.initial_speed * 1.25 * this.game.speed_multiplier;
@@ -30,17 +34,20 @@ export default class Player extends LiveGameObject {
   }
 
   handleMovement() {
-    if (isPressed("w")) {
+    if (globalThis.engine.isKeyDown("w")) {
       this.moveUp();
     }
-    if (isPressed("s")) {
+    if (globalThis.engine.isKeyDown("s")) {
       this.moveDown();
     }
   }
 
   handleRun() {
-    this.isMoving = arePressed(["w", "a", "s", "d"]);
-    this.isRunning = isPressed("shift");
+    this.isMoving = this.movementKeys.some((k) =>
+      globalThis.engine.isKeyDown(k),
+    );
+
+    this.isRunning = globalThis.engine.isKeyDown("shift");
 
     if (this.isMoving && this.isRunning) {
       this.run();

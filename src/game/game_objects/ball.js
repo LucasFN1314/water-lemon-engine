@@ -19,12 +19,7 @@ export default class Ball extends LiveGameObject {
     this.started = false;
 
     this.addToWorld(
-      [
-        this.engine.circle(this.radius),
-        this.engine.pos(0, 0),
-        this.engine.area(),
-        "ball",
-      ],
+      [this.engine.circle(this.radius), this.engine.pos(0, 0), "ball"],
       "ball",
     );
 

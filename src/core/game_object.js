@@ -11,14 +11,17 @@ export default class GameObject {
     this.direction = this.engine.vec2(0, 0);
   }
 
-  update() {}
   addToWorld(
     attributes = [],
     name = `game_object_${Object.keys(globalThis.engine?.entities || {})?.length}`,
   ) {
     this.object = this.engine.add(attributes);
     globalThis.entities[name] = this;
-    globalThis.entitiesArray.push(this);
+    //globalThis.entitiesArray.push(this);
+
+    this.object.onUpdate(() => {
+      this.update();
+    });
   }
 
   handleCollide(self, tags = [], callback = () => {}) {
@@ -28,4 +31,6 @@ export default class GameObject {
       });
     });
   }
+
+  update() {}
 }
