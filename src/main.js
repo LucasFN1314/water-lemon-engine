@@ -4,15 +4,18 @@ import Game from "./game/scenes/game";
 import SceneManager from "./core/scene_manager";
 import MainMenu from "./game/scenes/main_menu";
 import GameMain from "./game/game_main";
+import PermanentController from "./game/controllers/permanent_controller";
 // import "kaplay/global"; // uncomment if you want to use without the k. prefix
 
 const k = kaplay();
 globalThis.engine = k;
 globalThis.entities = {};
+globalThis.permanent_entities = {};
 
 k.loadRoot("./"); // A good idea for Itch.io publishing later
 
 function init() {
+  PermanentController.init();
   new GameMain();
 }
 

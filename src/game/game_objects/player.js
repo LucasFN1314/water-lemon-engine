@@ -1,8 +1,12 @@
 import LiveGameObject from "../../core/live_game_object";
+import PermanentController from "../controllers/permanent_controller";
 
 export default class Player extends LiveGameObject {
   constructor() {
     super();
+
+    PermanentController.save("player", this);
+
     this.isPhysic = false;
     this.isStatic = false;
 
