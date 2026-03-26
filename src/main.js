@@ -3,6 +3,7 @@ import kaplay from "kaplay";
 import Game from "./game/scenes/game";
 import SceneManager from "./core/scene_manager";
 import MainMenu from "./game/scenes/main_menu";
+import GameMain from "./game/game_main";
 // import "kaplay/global"; // uncomment if you want to use without the k. prefix
 
 const k = kaplay();
@@ -12,10 +13,7 @@ globalThis.entities = {};
 k.loadRoot("./"); // A good idea for Itch.io publishing later
 
 function init() {
-  SceneManager.register(new MainMenu());
-  SceneManager.register(new Game());
-
-  SceneManager.go("main_menu");
+  new GameMain();
 }
 
 init();
