@@ -11,6 +11,7 @@ const k = kaplay();
 globalThis.engine = k;
 globalThis.entities = {};
 globalThis.permanent_entities = {};
+globalThis.update_functions = [];
 
 k.loadRoot("./"); // A good idea for Itch.io publishing later
 
@@ -25,7 +26,7 @@ init();
 Faltantes que voy a agregar sobre esta misma demo:
 - Sistema de Colisiones de kaplay ✓
 - Sistema de Escenas de kaplay ✓
-- Sistema de Camaras de kaplay
+- Sistema de Camaras de kaplay ✓
 - Sistema de Sonido de kaplay
 - Sistema de Shaders de kaplay
 - Sistema de Path Finding de kaplay

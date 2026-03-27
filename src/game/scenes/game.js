@@ -6,6 +6,8 @@ import Rival from "../game_objects/rival";
 import SpeedController from "../controllers/speed_controller";
 import Scene from "../../core/scene";
 import GameObject from "../../core/game_object";
+import CameraController from "../controllers/camera_controller";
+import UIBackground from "../ui/background";
 
 export default class Game extends Scene {
   constructor() {
@@ -27,8 +29,9 @@ export default class Game extends Scene {
     this.player = new Player();
     this.rival = new Rival();
     this.ball = new Ball();
-    this.energy_indicator = new EnergyIndicator();
     this.debug_info = new DebugInfo();
+    this.energy_indicator = new EnergyIndicator();
+    this.background_controller = new UIBackground();
     this.speed_controller = new SpeedController();
 
     this.engine.setBackground(30, 30, 30);

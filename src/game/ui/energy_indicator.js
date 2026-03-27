@@ -20,6 +20,7 @@ export default class EnergyIndicator extends GameObject {
         this.engine.rect(this.base_width, 20),
         this.engine.pos(10, 10),
         this.engine.z(110),
+        this.engine.fixed(),
         "ui",
       ],
       "energy_indicator",
@@ -31,6 +32,7 @@ export default class EnergyIndicator extends GameObject {
         this.engine.pos(10, 10),
         this.engine.z(109),
         this.engine.color(50, 50, 50),
+        this.engine.fixed(),
       ],
       "energy_indicator_background",
     );

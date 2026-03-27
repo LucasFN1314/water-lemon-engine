@@ -21,8 +21,23 @@ export default class DebugInfo extends GameObject {
   update() {
     this.refreshTimer += this.engine.dt();
     if (this.refreshTimer > 0.5) {
-      const fps = Math.round(1 / this.engine.dt());
-      this.object.text = `FPS: ${fps}
+      const dt = this.engine.dt();
+      const fps = Math.round(1 / dt);
+
+      // CPU Proxy: Tiempo por frame en ms
+      const ms = (dt * 1000).toFixed(2);
+
+      // RAM: Solo disponible en Chrome/Edge
+      const memory = performance.memory
+        ? Math.round(performance.memory.usedJSHeapSize / 1048576) + " MB"
+        : "N/A";
+
+      // GPU Proxy: Cantidad de llamadas de dibujo (Draw Calls)
+      const drawCalls = this.engine.debug.drawCalls();
+
+      this.object.text = `FPS: ${fps} (${ms}ms)
+RAM: ${memory}
+Draw Calls: ${drawCalls}
 Player Score: ${findGameObjectByName("player").score}
 Rival Score: ${findGameObjectByName("rival").score}
 Total Score: ${globalThis.game.total_score}
