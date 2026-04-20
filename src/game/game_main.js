@@ -7,6 +7,6 @@ export default class GameMain {
     SceneManager.register(new MainMenu());
     SceneManager.register(new Game());
 
-    SceneManager.go("main_menu");
+    SceneManager.go("main_menu", { transition: false });
   }
 }
