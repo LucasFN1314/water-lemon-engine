@@ -1,5 +1,6 @@
 import LiveGameObject from "../../core/live_game_object";
 import PermanentController from "../controllers/permanent_controller";
+import InputManager from "../../core/input_manager";
 
 export default class Player extends LiveGameObject {
   constructor() {
@@ -38,20 +39,22 @@ export default class Player extends LiveGameObject {
   }
 
   handleMovement() {
-    if (globalThis.engine.isKeyDown("w")) {
+    if (InputManager.isDown("up")) {
       this.moveUp();
     }
-    if (globalThis.engine.isKeyDown("s")) {
+    if (InputManager.isDown("down")) {
       this.moveDown();
     }
   }
 
   handleRun() {
-    this.isMoving = this.movementKeys.some((k) =>
-      globalThis.engine.isKeyDown(k),
-    );
+    this.isMoving =
+      InputManager.isDown("up") ||
+      InputManager.isDown("down") ||
+      InputManager.isDown("left") ||
+      InputManager.isDown("right");
 
-    this.isRunning = globalThis.engine.isKeyDown("shift");
+    this.isRunning = InputManager.isDown("run");
 
     if (this.isMoving && this.isRunning) {
       this.run();

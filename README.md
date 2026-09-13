@@ -1,27 +1,33 @@
-# Folder structure
+# Water Lemon Man - Kaplay Engine Wrapper & Demo
 
-- `src` - source code for your kaplay project
-- `dist` - distribution folder, contains your index.html, built js bundle and static assets
+Motor 2D y capa de abstracción orientada a objetos (POO) construida sobre [Kaplay.js](https://kaplayjs.com/) con una demo jugable estilo Pong avanzado.
 
+---
 
-## Development
+## 📖 Documentación de la API
+
+Toda la referencia técnica de clases y métodos públicos del motor (`src/core/`) se encuentra detallada en:
+👉 **[API.md](./API.md)**
+
+---
+
+## 📁 Estructura del Proyecto
+
+- `src/core/`: Capa del motor/wrapper (Managers de Audio, Assets, Input, Storage, EventBus, Cámaras, Partículas, GameObjects, UI y Escenas).
+- `src/game/`: Implementación de la demo (escenas, paletas, pelota, IA y controladores).
+- `dist/`: Carpeta de distribución y empaquetado para producción.
+
+---
+
+## 🚀 Comandos de Desarrollo
 
 ```sh
+# Iniciar servidor de desarrollo
 $ npm run dev
-```
 
-will start a dev server at http://localhost:8000
-
-## Distribution
-
-```sh
+# Compilar bundle para producción en dist/
 $ npm run build
-```
 
-will build your js files into `dist/`
-
-```sh
+# Empaquetar juego en .zip para subir a Itch.io / Newgrounds
 $ npm run zip
 ```
-
-will build your game and package into a .zip file, you can upload to your server or itch.io / newground etc.

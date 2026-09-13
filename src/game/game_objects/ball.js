@@ -4,9 +4,8 @@ import {
   isObjectUnderMiddleScreen,
 } from "../../core/core";
 import LiveGameObject from "../../core/live_game_object";
-
-// || TODO: Al golpear a un jugador, rebotar fuerte incrementando la velocidad, la misma debe ir bajando a medida que rebota en las paredes
-// || Hasta llegar a su velocidad base
+import ParticleEmitter from "../../core/particle_emitter";
+import CameraController from "../../core/camera_controller";
 
 export default class Ball extends LiveGameObject {
   constructor() {
@@ -59,6 +58,15 @@ export default class Ball extends LiveGameObject {
       findGameObjectByName("rival").attack_mode = true;
     }
 
+    // Efecto visual de partículas y screen shake leve
+    ParticleEmitter.burst(self.object.pos, {
+      count: 12,
+      speedMin: 30,
+      speedMax: 120,
+      colors: [self.engine.rgb(255, 255, 255), self.engine.rgb(200, 200, 255)],
+    });
+    CameraController.shake(3, 0.1);
+
     self.direction.x *= -1;
     const zone = self.getPaddleHitZone(obj);
     if (zone === "TOP") {
@@ -75,16 +83,30 @@ export default class Ball extends LiveGameObject {
     const wallActions = {
       top: () => {
         self.direction.y *= -1;
+        ParticleEmitter.burst(self.object.pos, { count: 6 });
       },
       bottom: () => {
         self.direction.y *= -1;
+        ParticleEmitter.burst(self.object.pos, { count: 6 });
       },
       left: () => {
         // || Sumar puntos IA
+        ParticleEmitter.burst(self.object.pos, {
+          count: 25,
+          speedMax: 200,
+          colors: [self.engine.rgb(255, 100, 100)],
+        });
+        CameraController.shake(8, 0.25);
         self.reset("rival");
       },
       right: () => {
         // || Sumar puntos Jugador
+        ParticleEmitter.burst(self.object.pos, {
+          count: 25,
+          speedMax: 200,
+          colors: [self.engine.rgb(100, 255, 100)],
+        });
+        CameraController.shake(8, 0.25);
         self.reset("player");
       },
     };
@@ -93,8 +115,6 @@ export default class Ball extends LiveGameObject {
   }
 
   defineInitialDirection() {
-    // this.direction = this.engine.vec2(-1, 0);
-
     let number = generateRandomNumber(-1, 1);
     number = number === 0 ? 1 : number;
 
@@ -128,3 +148,4 @@ export default class Ball extends LiveGameObject {
     this.defineInitialDirection();
   }
 }
+
