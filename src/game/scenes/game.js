@@ -20,8 +20,6 @@ export default class Game extends Scene {
     this.internal_object = new GameObject();
     this.internal_object.addToWorld(["game"], "game");
 
-    // this.addToWorld(["game"], "game");
-
     this.total_score = 0;
     this.speed_multiplier = 1;
     this.initial_speed = 300;
@@ -29,6 +27,7 @@ export default class Game extends Scene {
     this.player = new Player();
     this.rival = new Rival();
     this.ball = new Ball();
+
     this.debug_info = new DebugInfo();
     this.energy_indicator = new EnergyIndicator();
     this.background_controller = new UIBackground();
@@ -43,6 +42,7 @@ export default class Game extends Scene {
   }
 
   update() {
+    CameraController.update();
     this.getTotalScore();
   }
 

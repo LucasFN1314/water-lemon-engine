@@ -12,7 +12,7 @@ export default class UIBackground extends GameObject {
         p1: this.engine.vec2(5, 5),
         p2: this.engine.vec2(this.engine.width() - 5, 5),
         width: this.line_width,
-        fixed: true,
+        fixed: false,
         z: 0,
       });
 
@@ -21,7 +21,7 @@ export default class UIBackground extends GameObject {
         p1: this.engine.vec2(5, this.engine.height() - 5),
         p2: this.engine.vec2(this.engine.width() - 5, this.engine.height() - 5),
         width: this.line_width,
-        fixed: true,
+        fixed: false,
         z: 0,
       });
 
@@ -30,7 +30,7 @@ export default class UIBackground extends GameObject {
         p1: this.engine.vec2(5, 5),
         p2: this.engine.vec2(5, this.engine.height() - 5),
         width: this.line_width,
-        fixed: true,
+        fixed: false,
         z: 0,
       });
 
@@ -39,7 +39,7 @@ export default class UIBackground extends GameObject {
         p1: this.engine.vec2(this.engine.width() - 5, 5),
         p2: this.engine.vec2(this.engine.width() - 5, this.engine.height() - 5),
         width: 3,
-        fixed: true,
+        fixed: false,
         z: 0,
       });
 
@@ -51,7 +51,7 @@ export default class UIBackground extends GameObject {
           this.engine.height() - 5,
         ),
         width: 3,
-        fixed: true,
+        fixed: false,
         z: 0,
       });
     });

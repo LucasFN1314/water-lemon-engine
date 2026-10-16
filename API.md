@@ -27,6 +27,7 @@ Este documento detalla todas las clases, módulos y métodos públicos que expon
   - [ParticleEmitter](#particleemitter)
 - [8. Interfaz de Usuario (UI)](#8-interfaz-de-usuario-ui)
   - [Button](#button)
+  - [DomView](#domview)
 - [9. Comunicación y Eventos](#9-comunicación-y-eventos)
   - [EventBus](#eventbus)
 - [10. Persistencia de Datos](#10-persistencia-de-datos)
@@ -150,6 +151,8 @@ Gestor estático para registro y transición entre escenas con efectos visuales.
 * **`SceneManager.go(sceneName, options = { transition: true, duration: 0.5 })`**:
   * Cambia a la escena `sceneName`.
   * Si `transition: true`, ejecuta un overlay de *Fade Out* y *Fade In* automático con interpolación suave (`k.tween`).
+* **`SceneManager.has(sceneName: string)`**: Retorna `true` si la escena especificada fue registrada.
+* **`SceneManager.getCurrentScene()`**: Retorna el nombre de la escena activa actual.
 
 ---
 
@@ -274,6 +277,26 @@ new Button(text, options = {
 
 #### Métodos
 * **`destroy()`**: Destruye tanto el fondo del botón como su etiqueta de texto asociada.
+
+---
+
+### `DomView`
+*Ubicación:* `src/core/ui/dom_view.js`  
+Gestor de overlays e interfaces de usuario basadas en HTML, CSS y JS montadas directamente sobre el canvas de Kaplay. Se sincroniza con `SceneManager` para desmontarse automáticamente al cambiar de escena. Incluye integración nativa con Vite HMR (Hot Module Replacement) para reflejar cambios en `.css` y `.html` en caliente sin recargar el juego ni reiniciar el estado.
+
+#### Métodos Estáticos
+* **`DomView.mount(options)`**:
+  * Monta una vista en el contenedor `#ui-root`.
+  * **Opciones:**
+    * `path` *(string)*: Ruta al archivo `.html` (ej. `"src/game/ui/main_menu.html"` o `"main_menu.html"`). Vite lo empaqueta automáticamente en el build.
+    * `html` *(string)*: Código HTML como string si no se utiliza `path`.
+    * `cssPath` *(string)*: Ruta al archivo `.css` (por defecto busca uno con el mismo nombre y ubicación que el `.html`).
+    * `css` *(string)*: Reglas CSS adicionales como string.
+    * `scriptPath` *(string)*: Ruta al archivo `.js` de lógica/controlador (por defecto busca uno con el mismo nombre que el `.html` en carpetas UI).
+    * `context` *(Object)*: Datos o referencias de la escena a inyectar al controlador (ej. `{ game, player }`).
+    * `onMount` *(Function)*: Callback opcional ejecutado tras montar el HTML. Recibe `{ root, $, $$, onUnmount, context }`. Si retorna una función, esta se registrará automáticamente como cleanup callback al desmontar.
+* **`DomView.clear()`**: Ejecuta todos los callbacks de desmontaje (cleanup), vacía el contenedor HTML y remueve las hojas de estilo dinámicas activas.
+* **`DomView.setVisible(visible: boolean)`**: Muestra u oculta el contenedor global sin destruirlo.
 
 ---
 

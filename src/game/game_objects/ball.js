@@ -5,7 +5,7 @@ import {
 } from "../../core/core";
 import LiveGameObject from "../../core/live_game_object";
 import ParticleEmitter from "../../core/particle_emitter";
-import CameraController from "../../core/camera_controller";
+import CameraController from "../controllers/camera_controller";
 
 export default class Ball extends LiveGameObject {
   constructor() {
@@ -65,7 +65,7 @@ export default class Ball extends LiveGameObject {
       speedMax: 120,
       colors: [self.engine.rgb(255, 255, 255), self.engine.rgb(200, 200, 255)],
     });
-    CameraController.shake(3, 0.1);
+    CameraController.shake(5, 0.1);
 
     self.direction.x *= -1;
     const zone = self.getPaddleHitZone(obj);
@@ -83,33 +83,27 @@ export default class Ball extends LiveGameObject {
     const wallActions = {
       top: () => {
         self.direction.y *= -1;
-        ParticleEmitter.burst(self.object.pos, { count: 6 });
       },
       bottom: () => {
         self.direction.y *= -1;
-        ParticleEmitter.burst(self.object.pos, { count: 6 });
       },
       left: () => {
         // || Sumar puntos IA
-        ParticleEmitter.burst(self.object.pos, {
-          count: 25,
-          speedMax: 200,
-          colors: [self.engine.rgb(255, 100, 100)],
-        });
-        CameraController.shake(8, 0.25);
+        CameraController.shake(10, 0.25);
         self.reset("rival");
       },
       right: () => {
         // || Sumar puntos Jugador
-        ParticleEmitter.burst(self.object.pos, {
-          count: 25,
-          speedMax: 200,
-          colors: [self.engine.rgb(100, 255, 100)],
-        });
-        CameraController.shake(8, 0.25);
+        CameraController.shake(10, 0.25);
         self.reset("player");
       },
     };
+
+    ParticleEmitter.burst(self.object.pos, {
+      count: 25,
+      speedMax: 200,
+      colors: [self.engine.rgb(255, 100, 100)],
+    });
 
     wallActions[direction]();
   }

@@ -14,8 +14,6 @@ export default class Player extends LiveGameObject {
     this.movementKeys = ["w", "a", "s", "d"];
 
     this.base_speed = this.game.initial_speed * this.game.speed_multiplier;
-    this.run_speed =
-      this.game.initial_speed * 1.25 * this.game.speed_multiplier;
 
     this.speed = this.base_speed;
 
@@ -30,7 +28,6 @@ export default class Player extends LiveGameObject {
   }
 
   update() {
-    this.speed = this.game.initial_speed * this.game.speed_multiplier;
 
     this.handleMovement();
     this.handleRun();

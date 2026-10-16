@@ -60,6 +60,10 @@ export default class LiveGameObject extends GameObject {
       this.stopRun();
       return;
     }
+
+    this.run_speed =
+      this.game.initial_speed * 1.25 * this.game.speed_multiplier;
+
     this.energyDifference = -this.energyCost;
     this.speed = this.run_speed;
   }
